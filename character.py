@@ -45,6 +45,7 @@ class Character:
             return f"{self.name} has {self.current_hit_points} HP. They are now dead."
 
 class Die:
+    """Object representing a game die"""
     def __init__(self, sides: int) -> None:
         self.sides = sides
         
@@ -54,23 +55,33 @@ class Die:
     
     @sides.setter
     def sides(self, value):
+        """limit sides of die to even numbers only"""
         if not (value%2) == 0:
             raise ValueError("Even number expected")
         self._sides = value
     
     def roll_dice(self, num_of_dice: int = 1) -> int:
+        """_summary_
+
+        Args:
+            num_of_dice (int, optional): Number of dice to bel rolled. Defaults to 1.
+
+        Returns:
+            int: total number of 
+        """
         #TODO: add 'self.modifier' arg
         self.num_of_dice = num_of_dice
         self.dice = f"{self.num_of_dice}d{self.sides}"
         print(f"Rolling {self.dice}")
         def roll_one_die():
             return random.randint(1, self.sides)
-        result = 0
+        results = []
         for num in range(0, self.num_of_dice):
             roll = roll_one_die()
             print(f"Result of roll {num}: {roll}")
-            result = result + roll
-        return result
+            results.append(roll)
+        total = sum(results)
+        return total, results
 
 grendl = Character(
     name="Grendl",
@@ -85,4 +96,4 @@ grendl = Character(
 #print(grendl)
 # print(grendl.adj_current_hp(-1))
 #print(grendl)
-print(Die(80).roll_dice(3))
+print(Die(6).roll_dice(3))
