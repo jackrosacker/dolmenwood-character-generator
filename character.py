@@ -8,8 +8,8 @@ class Character:
         name: str = None,
         kindred: str = None,
         ability_scores: dict = None,
-        ability_mods: dict = None,
-        char_class: str = None,
+        ability_mods: dict = {"str": 0, "int": 0, "wis": 0, "dex": 0, "con": 0, "cha": 0},
+        char_class: str = {"str": 0, "int": 0, "wis": 0, "dex": 0, "con": 0, "cha": 0},
         max_hit_points: int = None,
         current_hit_points: int = None,
         status: str = "Alive",
@@ -43,6 +43,14 @@ class Character:
         if self.current_hit_points <= 0:
             self.status = "Dead"
             return f"{self.name} has {self.current_hit_points} HP. They are now dead."
+        
+    def generate_ability_scores(self):
+        self.ability_scores["str"] = Die(6).roll_dice(3)
+        self.ability_scores["int"] = Die(6).roll_dice(3)
+        self.ability_scores["wis"] = Die(6).roll_dice(3)
+        self.ability_scores["dex"] = Die(6).roll_dice(3)
+        self.ability_scores["con"] = Die(6).roll_dice(3)
+        self.ability_scores["cha"] = Die(6).roll_dice(3)
 
 class Die:
     """Object representing a game die"""
@@ -69,7 +77,7 @@ class Die:
         Returns:
             int: total number of 
         """
-        #TODO: add 'self.modifier' arg
+        #TODO: add 'self.modifier' arg to add/subtract final points from score
         self.num_of_dice = num_of_dice
         self.dice = f"{self.num_of_dice}d{self.sides}"
         print(f"Rolling {self.dice}")
