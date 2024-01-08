@@ -1,5 +1,6 @@
 import random
 
+
 class Character:
     """_summary_"""
 
@@ -7,9 +8,23 @@ class Character:
         self,
         name: str = None,
         kindred: str = None,
-        ability_scores: dict = None,
-        ability_mods: dict = {"str": 0, "int": 0, "wis": 0, "dex": 0, "con": 0, "cha": 0},
-        char_class: str = {"str": 0, "int": 0, "wis": 0, "dex": 0, "con": 0, "cha": 0},
+        ability_scores: dict = {
+            "str": 0,
+            "int": 0,
+            "wis": 0,
+            "dex": 0,
+            "con": 0,
+            "cha": 0,
+        },
+        ability_mods: dict = {
+            "str": 0,
+            "int": 0,
+            "wis": 0,
+            "dex": 0,
+            "con": 0,
+            "cha": 0,
+        },
+        char_class: str = None,
         max_hit_points: int = None,
         current_hit_points: int = None,
         status: str = "Alive",
@@ -43,7 +58,7 @@ class Character:
         if self.current_hit_points <= 0:
             self.status = "Dead"
             return f"{self.name} has {self.current_hit_points} HP. They are now dead."
-        
+
     def generate_ability_scores(self):
         self.ability_scores["str"] = Die(6).roll_dice(3)
         self.ability_scores["int"] = Die(6).roll_dice(3)
@@ -52,22 +67,24 @@ class Character:
         self.ability_scores["con"] = Die(6).roll_dice(3)
         self.ability_scores["cha"] = Die(6).roll_dice(3)
 
+
 class Die:
     """Object representing a game die"""
+
     def __init__(self, sides: int) -> None:
         self.sides = sides
-        
+
     @property
     def sides(self):
         return self._sides
-    
+
     @sides.setter
     def sides(self, value):
         """limit sides of die to even numbers only"""
-        if not (value%2) == 0:
+        if not (value % 2) == 0:
             raise ValueError("Even number expected")
         self._sides = value
-    
+
     def roll_dice(self, num_of_dice: int = 1) -> int:
         """_summary_
 
@@ -75,33 +92,21 @@ class Die:
             num_of_dice (int, optional): Number of dice to bel rolled. Defaults to 1.
 
         Returns:
-            int: total number of 
+            int: total number of
         """
-        #TODO: add 'self.modifier' arg to add/subtract final points from score
+        # TODO: add 'self.modifier' arg to add/subtract final points from score
         self.num_of_dice = num_of_dice
         self.dice = f"{self.num_of_dice}d{self.sides}"
-        print(f"Rolling {self.dice}")
+        print(f"Rolling {self.dice}...")
+
         def roll_one_die():
             return random.randint(1, self.sides)
+
         results = []
         for num in range(0, self.num_of_dice):
             roll = roll_one_die()
-            print(f"Result of roll {num}: {roll}")
             results.append(roll)
         total = sum(results)
-        return total, results
-
-grendl = Character(
-    name="Grendl",
-    kindred="Grimalkin",
-    ability_scores={"str": 0, "int": 0, "wis": 0, "dex": 0, "con": 0, "cha": 0},
-    ability_mods={"str": 0, "int": 0, "wis": 0, "dex": 0, "con": 0, "cha": 0},
-    char_class="Friar",
-    max_hit_points=10,
-    current_hit_points=10,
-)
-
-#print(grendl)
-# print(grendl.adj_current_hp(-1))
-#print(grendl)
-print(Die(6).roll_dice(3))
+        print(f"  roll results: {results}")
+        print(f"  roll total: {total}")
+        return total
