@@ -60,12 +60,12 @@ class Character:
             return f"{self.name} has {self.current_hit_points} HP. They are now dead."
 
     def generate_ability_scores(self):
-        self.ability_scores["str"] = Die(6).roll_dice(3)
-        self.ability_scores["int"] = Die(6).roll_dice(3)
-        self.ability_scores["wis"] = Die(6).roll_dice(3)
-        self.ability_scores["dex"] = Die(6).roll_dice(3)
-        self.ability_scores["con"] = Die(6).roll_dice(3)
-        self.ability_scores["cha"] = Die(6).roll_dice(3)
+        self.ability_scores["str"], placeholder = Die(6).roll_dice(3)
+        self.ability_scores["int"], placeholder = Die(6).roll_dice(3)
+        self.ability_scores["wis"], placeholder = Die(6).roll_dice(3)
+        self.ability_scores["dex"], placeholder = Die(6).roll_dice(3)
+        self.ability_scores["con"], placeholder = Die(6).roll_dice(3)
+        self.ability_scores["cha"], placeholder = Die(6).roll_dice(3)
 
 
 class Die:
@@ -85,15 +85,17 @@ class Die:
             raise ValueError("Even number expected")
         self._sides = value
 
-    def roll_dice(self, num_of_dice: int = 1) -> int:
+    def roll_dice(self, num_of_dice: int = 1):
         """_summary_
 
         Args:
-            num_of_dice (int, optional): Number of dice to bel rolled. Defaults to 1.
+            num_of_dice (int, optional): Number of dice to be rolled. Defaults to 1.
 
         Returns:
             int: total number of
         """
+        total: int
+        roll_results: list[int]
         # TODO: add 'self.modifier' arg to add/subtract final points from score
         self.num_of_dice = num_of_dice
         self.dice = f"{self.num_of_dice}d{self.sides}"
@@ -102,11 +104,11 @@ class Die:
         def roll_one_die():
             return random.randint(1, self.sides)
 
-        results = []
+        roll_results = []
         for num in range(0, self.num_of_dice):
             roll = roll_one_die()
-            results.append(roll)
-        total = sum(results)
-        print(f"  roll results: {results}")
+            roll_results.append(roll)
+        total = sum(roll_results)
+        print(f"  roll results: {roll_results}")
         print(f"  roll total: {total}")
-        return total
+        return total, roll_results
