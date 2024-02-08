@@ -4,15 +4,19 @@ import pandas as pd
 
 st.title("Dice Roller")
 
+mod_message = "Number to add to final roll results. Can be positive or negative, must be an integer"
+
 num_of_dice = st.number_input(
     "Number of dice", min_value=1, max_value=100, value=1, step=1
 )
 
-sides = st.number_input("Number of sides", min_value=2, max_value=100, value=2, step=2)
+sides = st.number_input("Number of sides", min_value=2, max_value=100, value=20, step=2)
 
-total, roll_results = Die(sides=sides).roll_dice(num_of_dice=num_of_dice)
+modifier = st.number_input("Modifier", min_value=-1000, max_value=1000, value=0, help=mod_message)
 
-if st.button(f"Roll {num_of_dice} d {sides}", type="primary"):
+total, roll_results, modifier = Die(sides=sides).roll_dice(num_of_dice=num_of_dice, modifier=modifier)
+
+if st.button(f"Roll {num_of_dice} d {sides} + ({modifier})", type="primary"):
     st.write(f"Total: **{total}**")
 
     with st.expander("See individual roll results"):
@@ -21,7 +25,9 @@ if st.button(f"Roll {num_of_dice} d {sides}", type="primary"):
         s = ""
         for result in roll_results:
             s += f"{result}\n"
-        st.markdown(s)
+        
+        st.markdown(f"Roll results: {s}")
+        f"Modifier: {modifier}"
 
 st.divider()
 

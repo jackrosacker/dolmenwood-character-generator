@@ -60,12 +60,12 @@ class Character:
             return f"{self.name} has {self.current_hit_points} HP. They are now dead."
 
     def generate_ability_scores(self):
-        self.ability_scores["str"], placeholder = Die(6).roll_dice(3)
-        self.ability_scores["int"], placeholder = Die(6).roll_dice(3)
-        self.ability_scores["wis"], placeholder = Die(6).roll_dice(3)
-        self.ability_scores["dex"], placeholder = Die(6).roll_dice(3)
-        self.ability_scores["con"], placeholder = Die(6).roll_dice(3)
-        self.ability_scores["cha"], placeholder = Die(6).roll_dice(3)
+        self.ability_scores["str"], placeholder, placeholder = Die(6).roll_dice(3)
+        self.ability_scores["int"], placeholder, placeholder = Die(6).roll_dice(3)
+        self.ability_scores["wis"], placeholder, placeholder = Die(6).roll_dice(3)
+        self.ability_scores["dex"], placeholder, placeholder = Die(6).roll_dice(3)
+        self.ability_scores["con"], placeholder, placeholder = Die(6).roll_dice(3)
+        self.ability_scores["cha"], placeholder, placeholder = Die(6).roll_dice(3)
 
 
 class Die:
@@ -85,21 +85,26 @@ class Die:
             raise ValueError("Even number expected")
         self._sides = value
 
-    def roll_dice(self, num_of_dice: int = 1):
+    def roll_dice(self, num_of_dice: int = 1, modifier: int = 0):
         """_summary_
 
         Args:
             num_of_dice (int, optional): Number of dice to be rolled. Defaults to 1.
+            modifier (int, optional): Value to add or subtract from sum of roll results.
 
         Returns:
-            int: total number of
+            int: _description_
+            list: _description_
+            modifier: _description_
         """
         total: int
         roll_results: list[int]
-        # TODO: add 'self.modifier' arg to add/subtract final points from score
         self.num_of_dice = num_of_dice
         self.dice = f"{self.num_of_dice}d{self.sides}"
+        self.modifier = modifier
         print(f"Rolling {self.dice}...")
+        if self.modifier != 0:
+            print(f"Adding modifier {self.modifier}")
 
         def roll_one_die():
             return random.randint(1, self.sides)
@@ -108,7 +113,8 @@ class Die:
         for num in range(0, self.num_of_dice):
             roll = roll_one_die()
             roll_results.append(roll)
-        total = sum(roll_results)
+        total = sum(roll_results) + self.modifier
         print(f"  roll results: {roll_results}")
+        print(f"  modifier: {self.modifier}")
         print(f"  roll total: {total}")
-        return total, roll_results
+        return total, roll_results, self.modifier
