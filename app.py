@@ -2,7 +2,7 @@ import streamlit as st
 from character import Character, Die
 import pandas as pd
 
-st.title("Dice Roller")
+st.title("Dolmen Roller")
 
 mod_message = "Number to add to final roll results. Can be positive or negative, must be an integer"
 
